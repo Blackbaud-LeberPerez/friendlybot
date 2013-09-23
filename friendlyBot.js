@@ -10,10 +10,12 @@ bot.on('speak', function (data) {
   var name = data.name;
   var text = data.text;
 
-  if (name.match(/DJ Luminate/)){
-    bot.speak('Who are you, DJ Luminate?');
+  if (str.match(/(swallow|hard|like it)/g) != null){
+      bot.speak("That's what she said!");
+  } else if (name.match(/DJ Luminate/)){
+      bot.speak('Who are you, DJ Luminate?');
   } else if (text.match(/^\/hello$/)) {
-    bot.speak('Hey! How are you @'+name+'?');
+      bot.speak('Hey! How are you @'+name+'?');
   }
 });
 
