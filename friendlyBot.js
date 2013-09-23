@@ -10,7 +10,7 @@ bot.on('speak', function (data) {
   var name = data.name;
   var text = data.text;
 
-  if (str.match(/(swallow|hard|like it)/g) != null){
+  if (text.match(/(swallow|hard|like it)/g) != null){
       bot.speak("That's what she said!");
   } else if (name.match(/DJ Luminate/)){
       bot.speak('Who are you, DJ Luminate?');
