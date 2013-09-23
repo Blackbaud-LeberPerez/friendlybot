@@ -1,0 +1,9 @@
+I'm using the following wrapper around the Turntable API:
+
+https://github.com/alaingilbert/Turntable-API
+
+
+Only one instance of the bot can be deployed at a time. 
+This means that when you deploy it locally, you will kick out whoever deployed it last and it now lives in your box. 
+
+ 
