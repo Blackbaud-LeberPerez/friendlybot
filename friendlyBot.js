@@ -22,7 +22,11 @@ bot.on('speak', function (data) {
       bot.roomInfo(function(msg){
         var userArray = msg.users;
         userArray.sort(function(a, b) {return b.points - a.points});
-        botSpeakRecursive(0, userArray);
+        //botSpeakRecursive(0, userArray);
+        for(var i = 0; i < Math.min(userArray.length, 5); i++){
+          bot.speak(userArray[i].name+": "+userArray[i].points);
+          sleep(100);
+        }
       })
   }
 });
@@ -30,6 +34,16 @@ bot.on('speak', function (data) {
 var botSpeakRecursive = function(index, userArray) {
   if(index < Math.min(userArray.length, 5)){
     bot.speak(userArray[index].name+": "+userArray[index].points, botSpeakRecursive(index+1, userArray));
+    sleep(250);
+  }
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
   }
 }
 
