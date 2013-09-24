@@ -22,14 +22,16 @@ bot.on('speak', function (data) {
       bot.roomInfo(function(msg){
         var userArray = msg.users;
         userArray.sort(function(a, b) {return b.points - a.points});
-
-	      var sortedText = '';
-        for (var i = 0; i < Math.min(userArray.length, 5); i++)
-          sortedText += userArray[i].name + ": " + userArray[i].points + "\n\r";  
-     	  bot.speak(sortedText);
+        botSpeakRecursive(0, userArray);
       })
   }
 });
+
+var botSpeakRecursive = function(index, userArray) {
+  if(index < Math.min(userArray.length, 5)){
+    bot.speak(userArray[index].name+": "+userArray[index].points, botSpeakRecursive(index+1, userArray));
+  }
+}
 
 
 bot.on('newsong', function(data){
