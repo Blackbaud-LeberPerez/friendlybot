@@ -4,14 +4,14 @@ var USERID = '523cbc4caaa5cd604208c221';
 var ROOMID = '5239ba6eaaa5cd1c65cd5115';
 
 var bot = new Bot(AUTH, USERID, ROOMID);
-var toplist = new Object();
+
 
 bot.on('speak', function (data) {
   // Get the data
   var name = data.name;
   var text = data.text;
 
-  if (text.match(/(swallow|hard|like it)/gi) != null){
+  if (text.match(/(swallow|hard|like it|head)/gi) != null){
       bot.speak("That's what she said!");
   } else if (name.match(/DJ Luminate/)){
       bot.speak('Who are you, DJ Luminate?');
@@ -21,9 +21,12 @@ bot.on('speak', function (data) {
       bot.speak("Top User Points in Room");
       bot.roomInfo(function(msg){
         var userArray = msg.users;
-        userArray.sort(function(a, b) {return b.points - a.points})
-        for (var i = 0; i < userArray.length; i++)
-          bot.speak(userArray[i].name+": "+userArray[i].points);
+        userArray.sort(function(a, b) {return b.points - a.points});
+
+	      var sortedText = '';
+        for (var i = 0; i < Math.min(userArray.length, 5); i++)
+          sortedText += userArray[i].name + ": " + userArray[i].points + "\n\r";  
+     	  bot.speak(sortedText);
       })
   }
 });
@@ -33,11 +36,6 @@ bot.on('newsong', function(data){
   var songName = data.room.metadata.current_song.metadata.song;
   var artist = data.room.metadata.current_song.metadata.artist;
 
-  if( Math.floor((Math.random()*2)) % 2 == 0){
-    bot.speak('OMG! ' + songName);
-  } else {
-    bot.speak('I just love ' + artist);
-  }
 
   bot.vote('up');
 });
