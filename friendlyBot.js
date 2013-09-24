@@ -4,6 +4,7 @@ var USERID = '523cbc4caaa5cd604208c221';
 var ROOMID = '5239ba6eaaa5cd1c65cd5115';
 
 var bot = new Bot(AUTH, USERID, ROOMID);
+var toplist = new Object();
 
 bot.on('speak', function (data) {
   // Get the data
@@ -16,6 +17,14 @@ bot.on('speak', function (data) {
       bot.speak('Who are you, DJ Luminate?');
   } else if (text.match(/^\/hello$/i)) {
       bot.speak('Hey! How are you @'+name+'?');
+  } else if (text.match(/^\/top$/)){
+      bot.speak("Top User Points in Room");
+      bot.roomInfo(function(msg){
+        var userArray = msg.users;
+        userArray.sort(function(a, b) {return b.points - a.points})
+        for (var i = 0; i < userArray.length; i++)
+          bot.speak(userArray[i].name+": "+userArray[i].points);
+      })
   }
 });
 
