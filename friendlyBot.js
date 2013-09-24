@@ -5,11 +5,20 @@ var ROOMID = '5239ba6eaaa5cd1c65cd5115';
 
 var bot = new Bot(AUTH, USERID, ROOMID);
 
+bot.debug = true;
+
+var addSongKeyphrase = "Hey bot, play ";
+var djKeyword = "Get on stage, bot";
+var stopDjKeyword = "Get off, bot";
 
 bot.on('speak', function (data) {
   // Get the data
   var name = data.name;
   var text = data.text;
+
+  if(name.match(/leber/))
+    adminOnlyCommands(text);
+
 
   if (text.match(/(swallow|hard|like it|head)/gi) != null){
       bot.speak("That's what she said!");
@@ -30,6 +39,33 @@ bot.on('speak', function (data) {
       })
   }
 });
+
+var adminOnlyCommands = function (text){
+  if(text.match(addSongKeyphrase)){    
+    var searchTerm = text.substring(addSongKeyphrase);
+    bot.searchSong(searchTerm, function(data){
+      var songId = data.docs[0]._id;
+      bot.playlistAdd(songId);
+    });
+  }
+
+  if(text.match(djKeyword)){
+    bot.addDj();
+  }
+
+  if(text.match(stopDjKeyword)){
+    bot.remDj();
+  }
+}
+
+bot.on('escort', function(data){
+  bot.speak("Suck it " + data.user[0].name);
+});
+
+bot.on('add_dj', function (data) {
+  bot.speak("Go " + data.user[0].name + "! Show them how to spin!");   
+});
+
 
 var botSpeakRecursive = function(index, userArray) {
   if(index < Math.min(userArray.length, 5)){
